@@ -1,0 +1,38 @@
+general:
+  host: #enter your mqtt broker hostname or ip address
+  user: #mqtt broker username
+  pwd: #mqtt broker password
+  port: #mqtt broker port
+  names: "roku ipad  firetablet" #space separated list of entities that you wish to control
+  mqttPrefix: homeassistant #leave this like this if you want HA to recognize the entities Do not change
+  mqttType: switch #switch device for HA integration. Do not change
+  mqttConfig: config #mqtt message that signs for configuration paramaters. Do not change
+  mqttState: state #mqtt message that indicates device status. Do not change
+  mqttCommand: set #mqtt message that changes device status. Do not change
+  mqttIconOn: mdi:lan-connect #icon to be displayed in HA. AT this time only this icon is in use. HA will change the color depending on off/on state
+  mqttIconOff: F0C9B #future plan to impement a different icon when the internet is off
+  mqttNode: openwrt #name for your node... can use anything
+
+#for each of the devices in "names" you need to tell the script the rule number to modify
+#first create in openwrt the rules that you want to activate/deactivate. You can use LUCI or the command interface. 
+#once you have created the rules, then use "uci show firewall" to display the rules. Determine which rules correspond to the device you are trying to control
+
+#for example, to block the firetablet I have rule #3
+#firewall.@rule[3]=rule
+#firewall.@rule[3].name='firekill'
+#firewall.@rule[3].target='REJECT'
+#firewall.@rule[3].src_mac='XXXXXXXX'
+#firewall.@rule[3].dest='wan'
+#firewall.@rule[3].src='lan'
+#firewall.@rule[3].enabled='0'
+
+#note that enabled=1 means that the rule is active, or that the internet is "off" for that device. 
+
+roku:
+  rule: 1
+
+ipad:
+  rule: 2
+
+firetablet:
+  rule: 3
