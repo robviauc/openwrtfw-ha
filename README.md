@@ -1,7 +1,7 @@
 # openwrtfw-ha
 Integrates OpenWRT firewall with HomeAssistant via MQTT
 
-This is a very preliminary project that I just got to work.
+This is a project in alpha stage. Use at your own risk. 
 
 My main goal was to be able to restrict internet access to my 4 year old child on his tablet and on our Roku. 
 OpenWRT has parental controls but they need to be activated by set times which was not working for us. I was logging in into openWRT and activating/deactivating the rules manually. Needless to say, the setup was not intuitive and my wife was not willing to learn it.
@@ -16,13 +16,24 @@ So I decided to use a software switch, one provided by HomeAssistant. I already 
 
 For this project I am using un-encrypted mqtt and the firewall rules are based on MAC Addresses. I guess that if he uses wireshark to sniff the MQTT messages or is able to spoof his MAC Address he will be able to overcome the system. I am not expecting him to develop those skill yet and if he does, he will have earned his access.
 
+## Other Uses
+- allow/disallow a port forward
+   * access to a webserver/ftp server just when you need it.
+- turn on/off a DMZ 
+- block your IOT devices from the internet but have an easy way to re-connect them for OTA upgrades
+- with some modifications may allow to report your connectivity to HA.. external IP address, connection speed, etc. 
+
+
 # Requirements
 OpenWRT - I am using OpenWrt 19.07.2 r10947-65030d81f3 
+
 HomeAssistant with configured mosquitto broker and working mqtt integration (you could also run mosquitto broker on openwrt and have HomeAssistant connect to it)
 
 # Install dependencies
 opkg update
+
 opkg install mosquitto mosquitto-client libmosquitto grep
+
 obtain parse_yaml.sh parser (https://gist.github.com/pkuczynski/8665367)
 
 # Setup - OpenWRT
@@ -32,9 +43,9 @@ obtain parse_yaml.sh parser (https://gist.github.com/pkuczynski/8665367)
 3. make a directory /etc/iot/
 4. copy announcer.sh, listner2.sh, firewall_mqtt.yml, and parse_yaml.sh (see github link above) to your new directory
 5. make the .sh files executable 
-   chmod +x announcer.sh
-   chmod +x listner2.sh
-   chmod +x parse_yaml.sh
+   - chmod +x announcer.sh
+   - chmod +x listner2.sh
+   - chmod +x parse_yaml.sh
 6. modify the firewall_mqtt.yml file to your needs. 
 7. Create startup script to execute announcer.sh upon device initiation. (working on it, will publish it when ready)
 
