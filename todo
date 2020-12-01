@@ -1,0 +1,7 @@
+1. allow the use of encrypted mqtt messages
+2. develop startup script
+3. allow a different icon for the off state
+4. enable mqtt sensor for variables present on openwrt -- per device data usage
+5. allow qos modification of firewall rules.
+6. show a unique id to homeassistant to allow full automatic integration as a new device
+7. rewrite listner script in lua for better integration into openwrt environment
