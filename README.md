@@ -16,13 +16,31 @@ So I decided to use a software switch, one provided by HomeAssistant. I already 
 
 For this project I am using un-encrypted mqtt and the firewall rules are based on MAC Addresses. I guess that if he uses wireshark to sniff the MQTT messages or is able to spoof his MAC Address he will be able to overcome the system. I am not expecting him to develop those skill yet and if he does, he will have earned his access.
 
-#Requirements
+# Requirements
 OpenWRT - I am using OpenWrt 19.07.2 r10947-65030d81f3 
-HomeAssistant with mosquitto broker (you could also run mosquitto broker on openwrt and have HomeAssistant connect to it)
+HomeAssistant with configured mosquitto broker and working mqtt integration (you could also run mosquitto broker on openwrt and have HomeAssistant connect to it)
 
-#Install dependencies
+# Install dependencies
 opkg update
 opkg install mosquitto mosquitto-client libmosquitto grep
 obtain parse_yaml.sh parser (https://gist.github.com/pkuczynski/8665367)
 
+# Setup - OpenWRT
+0. install depependencies using opkg as above
+1. Configure the rules using LUCI or UCI
+2. use the ssh interface to determine which rules you want to control. Use the command "uci show firewall"
+3. make a directory /etc/iot/
+4. copy announcer.sh, listner2.sh, firewall_mqtt.yml, and parse_yaml.sh (see github link above) to your new directory
+5. make the .sh files executable 
+   chmod +x announcer.sh
+   chmod +x listner2.sh
+   chmod +x parse_yaml.sh
+6. modify the firewall_mqtt.yml file to your needs. 
+7. Create startup script to execute announcer.sh upon device initiation. (working on it, will publish it when ready)
+
+Once you have this, execute announcer.sh from the /etc/iot directory. If everything goes well, the script will announce itself to the mqtt broker. 
+
+# Setup - HomeAssistant
+
+HA will get the message and will create the proper entities. The entities will not appear as a "new integration". However, they will be available automatically. Just add a button card. The entity name will be switch.name, where name is the name you used in the firewall_mqtt.yml file. 
 
