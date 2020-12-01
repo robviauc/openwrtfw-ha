@@ -23,4 +23,6 @@ HomeAssistant with mosquitto broker (you could also run mosquitto broker on open
 #Install dependencies
 opkg update
 opkg install mosquitto mosquitto-client libmosquitto grep
+obtain parse_yaml.sh parser (https://gist.github.com/pkuczynski/8665367)
+
 
